@@ -31,5 +31,5 @@ COPY . /code
 RUN ln -s /code/marzban-cli.py /usr/bin/marzban-cli \
     && chmod +x /usr/bin/marzban-cli \
     && marzban-cli completion install --shell bash
-
+HEALTHCHECK CMD python3 -c "import requests,sys; sys.exit(int(not requests.get(\"http://localhost:${UVICORN_PORT}/dashboard\").ok))" || exit 1
 CMD ["bash", "-c", "alembic upgrade head; python main.py"]
