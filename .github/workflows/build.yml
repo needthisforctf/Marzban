@@ -47,13 +47,15 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v5
         with:
           context: .
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
           push: true
+          cache-from: type=registry,ref=ghcr.io/${{ toLower(github.repository) }}:${{ github.ref_name }}-build-cache 
+          cache-to: type=registry,ref=ghcr.io/${{ toLower(github.repository) }}:${{ github.ref_name }}-build-cache,mode=max
           tags: |
             turbotaxmachine/marzban:latest
             turbotaxmachine/marzban:${{github.ref_name}}
-            ghcr.io/needthisforctf/marzban:latest
-            ghcr.io/needthisforctf/marzban:${{github.ref_name}}
+            ghcr.io/${{ toLower(github.repository) }}:latest
+            ghcr.io/${{ toLower(github.repository) }}:${{github.ref_name}}
