@@ -60,7 +60,6 @@ jobs:
           cache-from: type=registry,ref=ghcr.io/${{ steps.lower-repo.outputs.repository }}:${{ github.ref_name }}-build-cache 
           cache-to: type=registry,ref=ghcr.io/${{ steps.lower-repo.outputs.repository }}:${{ github.ref_name }}-build-cache,mode=max
           tags: |
-            turbotaxmachine/marzban:latest
-            turbotaxmachine/marzban:${{github.ref_name}}
             ghcr.io/${{ steps.lower-repo.outputs.repository }}:latest
             ghcr.io/${{ steps.lower-repo.outputs.repository }}:${{github.ref_name}}
+            ghcr.io/${{ steps.lower-repo.outputs.repository }}:${{env.GITHUB_REF_SLUG}}
