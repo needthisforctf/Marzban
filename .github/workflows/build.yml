@@ -46,16 +46,21 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: lower-repo
+        id: lower-repo
+        run: |
+          echo "IMAGE=${GITHUB_REPOSITORY@L}" >> $GITHUB_OUTPUT
+
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
           context: .
           platforms: linux/amd64
           push: true
-          cache-from: type=registry,ref=ghcr.io/${{ toLower(github.repository) }}:${{ github.ref_name }}-build-cache 
-          cache-to: type=registry,ref=ghcr.io/${{ toLower(github.repository) }}:${{ github.ref_name }}-build-cache,mode=max
+          cache-from: type=registry,ref=ghcr.io/${{ steps.lower-repo.outputs.repository }}:${{ github.ref_name }}-build-cache 
+          cache-to: type=registry,ref=ghcr.io/${{ steps.lower-repo.outputs.repository }}:${{ github.ref_name }}-build-cache,mode=max
           tags: |
             turbotaxmachine/marzban:latest
             turbotaxmachine/marzban:${{github.ref_name}}
-            ghcr.io/${{ toLower(github.repository) }}:latest
-            ghcr.io/${{ toLower(github.repository) }}:${{github.ref_name}}
+            ghcr.io/${{ steps.lower-repo.outputs.repository }}:latest
+            ghcr.io/${{ steps.lower-repo.outputs.repository }}:${{github.ref_name}}
