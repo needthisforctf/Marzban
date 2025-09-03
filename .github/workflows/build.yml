@@ -56,7 +56,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          platforms: linux/amd64
           push: true
           cache-from: type=registry,ref=ghcr.io/${{ steps.lower-repo.outputs.repository }}:${{ github.ref_name }}-build-cache 
           cache-to: type=registry,ref=ghcr.io/${{ steps.lower-repo.outputs.repository }}:${{ github.ref_name }}-build-cache,mode=max
