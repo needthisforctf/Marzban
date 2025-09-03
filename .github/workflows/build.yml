@@ -46,10 +46,11 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: lower-repo
-        id: lower-repo
+      - id: lower-repo
+        name: Repository to lowercase
+        shell: pwsh
         run: |
-          echo "IMAGE=${GITHUB_REPOSITORY@L}" >> $GITHUB_OUTPUT
+          "::set-output name=repository::$($env:GITHUB_REPOSITORY.ToLowerInvariant())"
 
       - name: Build and push
         uses: docker/build-push-action@v5
